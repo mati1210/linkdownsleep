@@ -1,0 +1,43 @@
+#!/bin/sh
+# SPDX-License-Identifier: MPL-2.0
+# linkdownsleep: suspend if interface down
+RTC=/sys/class/rtc/rtc0/wakealarm
+IF=enp3s0
+
+die() {
+	printf '%s\n' "$1"
+	exit 1
+}
+
+check() {
+	# can we write to the alarm?
+	test -w "$RTC" || die "can't write to alarm!"
+
+	# can we suspend?
+	pkcheck -p "$$" -a org.freedesktop.login1.suspend || die "can't suspend!"
+}
+
+is_link() {
+	ip -j link show "$IF" |jq -e '.[0].operstate == $state' --arg state "$1"
+}
+
+set_alarm() {
+	date '+%s' -d "$1" > "$RTC"
+}
+
+main_loop() {
+	sleep 10
+	is_link UP && main_loop
+	sleep 10
+	is_link UP && main_loop
+
+	# set up alarm
+	set_alarm '+5min'
+	systemctl suspend
+
+	sleep 5
+	main_loop
+}
+
+check
+main_loop
