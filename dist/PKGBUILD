@@ -1,0 +1,33 @@
+_pkgname="linkdownsleep"
+pkgname="$_pkgname-git"
+pkgver=0
+pkgrel=1
+pkgdesc="suspend when interface down"
+arch=(any)
+url="https://github.com/mati1210/linkdownsleep"
+license=(MPL-2.0)
+depends=(
+	systemd
+	polkit
+	iproute2
+	jq
+)
+makedepends=(git)
+checkdepends=()
+optdepends=()
+source=("git+$url")
+b2sums=(SKIP)
+
+pkgver() {
+	cd "$_pkgname"
+	(
+		set -o pipefail
+		git describe --long --abbrev=7 2>/dev/null | sed 's/\([^-]*-g\)/r\1/;s/-/./g' ||
+		printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+	)
+}
+
+package() {
+	cd "$_pkgname"
+	make DESTDIR="$pkgdir/" install
+}
