@@ -1,0 +1,32 @@
+[Unit]
+Description=suspend when interface down
+After=network.target
+
+[Service]
+User=linkdownsleep
+Group=linkdownsleep
+ExecStart=@PREFIX@/bin/linkdownsleep
+
+CPUWeight=idle
+IOSchedulingClass=idle
+
+CapabilityBoundingSet=
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+PrivateDevices=yes
+PrivateTmp=yes
+PrivateUsers=yes
+ProtectHome=yes
+ProtectProc=invisible
+ProtectSystem=strict
+NoNewPrivileges=yes
+RestrictRealtime=yes
+SystemCallArchitectures=native
+SystemCallFilter=~ @reboot @swap @mount @module @resources @debug @obsolete @cpu-emulation
+
+[Install]
+WantedBy=multi-user.target

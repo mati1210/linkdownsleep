@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="rtc", KERNEL=="rtc0", RUN+="/bin/chgrp linkdownsleep /sys$env{DEVPATH}/wakealarm", RUN+="/bin/chmod g+w /sys$env{DEVPATH}/wakealarm"
