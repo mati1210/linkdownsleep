@@ -25,19 +25,17 @@ set_alarm() {
 	date '+%s' -d "$1" > "$RTC"
 }
 
-main_loop() {
+check
+
+while true; do
 	sleep 10
-	is_link UP && main_loop
+	is_link UP && continue
 	sleep 10
-	is_link UP && main_loop
+	is_link UP && continue
 
 	# set up alarm
 	set_alarm '+5min'
 	systemctl suspend
 
 	sleep 5
-	main_loop
-}
-
-check
-main_loop
+done
