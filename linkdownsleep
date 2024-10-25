@@ -18,7 +18,7 @@ check() {
 }
 
 is_link() {
-	ip -j link show "$IF" |jq -e '.[0].operstate == $state' --arg state "$1"
+	ip -j link show "$IF" |jq -e '.[0].operstate == $state' --arg state "$1" >/dev/null
 }
 
 set_alarm() {
