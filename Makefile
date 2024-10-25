@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 
-PREFIX ?= /usr/
+PREFIX ?= /usr
 
 linkdownsleep.service: linkdownsleep.service.in
 	sed "s+@PREFIX@+$(PREFIX)+g" linkdownsleep.service.in > linkdownsleep.service
