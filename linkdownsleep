@@ -18,7 +18,8 @@ check() {
 }
 
 is_link() {
-	ip -j link show "$IF" |jq -e '.[0].operstate == $state' --arg state "$1" >/dev/null
+	read -r state < /sys/class/net/$IF/operstate
+	test "$state" = "$1"
 }
 
 set_alarm() {
@@ -29,9 +30,9 @@ check
 
 while true; do
 	sleep 10
-	is_link UP && continue
+	is_link up && continue
 	sleep 10
-	is_link UP && continue
+	is_link up && continue
 
 	# set up alarm
 	set_alarm '+5min'
