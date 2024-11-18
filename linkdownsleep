@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 # linkdownsleep: suspend if interface down
 RTC=/sys/class/rtc/rtc0/wakealarm
-IF=enp3s0
+IF="${1?}"
 
 die() {
 	printf '%s\n' "$1"
@@ -18,7 +18,7 @@ check() {
 }
 
 is_link() {
-	read -r state < /sys/class/net/$IF/operstate
+	read -r state < "/sys/class/net/$IF/operstate"
 	test "$state" = "$1"
 }
 

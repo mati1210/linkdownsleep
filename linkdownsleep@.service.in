@@ -1,11 +1,11 @@
 [Unit]
-Description=suspend when interface down
+Description=suspend when interface %I down
 After=network.target
 
 [Service]
 User=linkdownsleep
 Group=linkdownsleep
-ExecStart=@PREFIX@/bin/linkdownsleep
+ExecStart=@PREFIX@/bin/linkdownsleep %I
 
 CPUWeight=idle
 IOSchedulingClass=idle
